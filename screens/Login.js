@@ -46,7 +46,7 @@ export default class Login extends Component {
         return (
             <KeyboardAvoidingView style={styles.login} behavior="padding">
                 <Block padding={[0, theme.sizes.base * 2]}>
-                    <Text h1 bold>로그인</Text>
+                    <Text h1 bold>Login</Text>
                     <Block middle>
                         <Input
                             label="Email"
@@ -66,13 +66,13 @@ export default class Login extends Component {
                         <Button gradient onPress={() => this.handleLogin()}>
                             {loading ?
                                 <ActivityIndicator size="small" color="white" /> :
-                                <Text bold white center>로그인</Text>
+                                <Text bold white center>Login</Text>
                             }
                         </Button>
 
                         <Button onPress={() => navigation.navigate('Forgot')}>
                             <Text gray caption center style={{ textDecorationLine: 'underline' }}>
-                                비밀번호 잊었습니까?
+                                Forgot your password?
               </Text>
                         </Button>
                     </Block>

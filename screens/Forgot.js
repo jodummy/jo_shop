@@ -61,7 +61,7 @@ export default class Forgot extends Component {
     return (
       <KeyboardAvoidingView style={styles.forgot} behavior="padding">
         <Block padding={[0, theme.sizes.base * 2]}>
-          <Text h1 bold>비밀번호?</Text>
+          <Text h1 bold>Forgot</Text>
           <Block middle>
             <Input
               label="Email"
@@ -73,13 +73,13 @@ export default class Forgot extends Component {
             <Button gradient onPress={() => this.handleForgot()}>
               {loading ?
                 <ActivityIndicator size="small" color="white" /> :
-                <Text bold white center>비밀번호 찾기</Text>
+                <Text bold white center>Forgot</Text>
               }
             </Button>
 
             <Button onPress={() => navigation.navigate('Login')}>
               <Text gray caption center style={{ textDecorationLine: 'underline' }}>
-                로그인 하기
+                Back to Login
               </Text>
             </Button>
           </Block>

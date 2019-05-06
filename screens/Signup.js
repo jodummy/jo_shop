@@ -52,7 +52,7 @@ export default class SignUp extends Component {
     return (
       <KeyboardAvoidingView style={styles.signup} behavior="padding">
         <Block padding={[0, theme.sizes.base * 2]}>
-          <Text h1 bold>회원 가입</Text>
+          <Text h1 bold>Sign Up</Text>
           <Block middle>
             <Input
               email
@@ -63,7 +63,7 @@ export default class SignUp extends Component {
               onChangeText={text => this.setState({ email: text })}
             />
             <Input
-              label="이름"
+              label="Username"
               error={hasErrors('username')}
               style={[styles.input, hasErrors('username')]}
               defaultValue={this.state.username}
@@ -80,13 +80,13 @@ export default class SignUp extends Component {
             <Button gradient onPress={() => this.handleSignUp()}>
               {loading ?
                 <ActivityIndicator size="small" color="white" /> :
-                <Text bold white center>회원가입</Text>
+                <Text bold white center>Sign Up</Text>
               }
             </Button>
 
             <Button onPress={() => navigation.navigate('Login')}>
               <Text gray caption center style={{ textDecorationLine: 'underline' }}>
-                로그인
+                Back to Login
               </Text>
             </Button>
           </Block>

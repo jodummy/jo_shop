@@ -127,6 +127,7 @@ const styles = StyleSheet.create({
         marginBottom: theme.sizes.base * 3.5,
     },
     category: {
+        // this should be dynamic based on screen width
         minWidth: (width - (theme.sizes.padding * 2.4) - theme.sizes.base) / 2,
         maxWidth: (width - (theme.sizes.padding * 2.4) - theme.sizes.base) / 2,
         maxHeight: (width - (theme.sizes.padding * 2.4) - theme.sizes.base) / 2,
