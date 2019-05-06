@@ -141,10 +141,10 @@ render() {
             </Block>
             <Block middle flex={0.5} margin={[0, theme.sizes.padding * 2]}>
                 <Button gradient onPress={() => navigation.navigate('Login')}>
-                    <Text center semibold white>Login</Text>
+                    <Text center semibold white>로그인</Text>
                 </Button>
                 <Button shadow onPress={() => navigation.navigate('SignUp')}>
-                    <Text center semibold>Signup</Text>
+                    <Text center semibold>회원가입</Text>
                 </Button>
                 <Button onPress={() => this.setState({ showTerms: true })}>
                     <Text center caption gray>Terms of service</Text>
