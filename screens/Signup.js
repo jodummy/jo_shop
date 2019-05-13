@@ -3,46 +3,106 @@ import { Alert, ActivityIndicator, Keyboard, KeyboardAvoidingView, StyleSheet } 
 
 import { Button, Block, Input, Text } from '../components';
 import { theme } from '../constants';
+import firebase, { database } from 'firebase';
 
 export default class SignUp extends Component {
   state = {
-    email: null,
-    username: null,
-    password: null,
+    id: '',
+    email: '',
+    username: '',
+    password: '',
     errors: [],
     loading: false,
+
   }
+
 
   handleSignUp() {
     const { navigation } = this.props;
-    const { email, username, password } = this.state;
+    const { id, email, username, password } = this.state;
     const errors = [];
 
     Keyboard.dismiss();
     this.setState({ loading: true });
 
-    // check with backend API or with some static data
+    var config = {
+      apiKey: "AIzaSyDE01SRVB6g99NCtlYfhgpW-3Ctc4PZdpg",
+      authDomain: "reactnativedatabase-e3164.firebaseapp.com",
+      databaseURL: "https://reactnativedatabase-e3164.firebaseio.com",
+      projectId: "reactnativedatabase-e3164",
+      storageBucket: "reactnativedatabase-e3164.appspot.com",
+      messagingSenderId: "5654389138",
+      appId: "1:5654389138:web:91ada309162d79ce"
+    };
+    if (!firebase.apps.length) {
+      firebase.initializeApp(config);
+    }
+
+    // 없으면 체크해주는 기능
+    if (!id) errors.push('id');
     if (!email) errors.push('email');
     if (!username) errors.push('username');
     if (!password) errors.push('password');
-
     this.setState({ errors, loading: false });
 
-    if (!errors.length) {
-      Alert.alert(
-        'Success!',
-        'Your account has been created',
-        [
+    //빈 것이 0이어야지 들어간다.
+
+
+    let userId = this.state.id;
+    let userEmail = this.state.email;
+    let userPassword = this.state.password;
+    let userName = this.state.username;
+    let result = '';
+    
+    console.log('------------------------------------------------------------------------------');
+    console.log('에러 갯수: ' + errors.length);
+    console.log('id : ' + this.state.id);
+    console.log('email : ' + this.state.email);
+    console.log('name : ' + this.state.username);
+    console.log('pass : ' + this.state.password);
+
+    firebase.database().ref('/user/' + userId).once('value').then(function (snapshot) {
+      result = (snapshot.val() && snapshot.val().username) || '없어';
+      console.log('tests' + result);
+      if (!errors.length && result === '없어') {
+        firebase.database().ref('user/' + userId).set(
           {
-            text: 'Continue', onPress: () => {
-              navigation.navigate('Browse')
-            }
+            email: userEmail,
+            password: userPassword,
+            username: userName,
           }
-        ],
-        { cancelable: false }
-      )
-    }
+        ).then(() => {
+          console.log('inserted !');
+          Alert.alert(
+            'Success!',
+            'Your account has been created',
+            [
+              {
+                text: 'Continue', onPress: () => {
+                  navigation.navigate('Browse')
+                }
+              }
+            ],
+            { cancelable: false }
+          )
+        }).catch((error) => {
+          console.log(error);
+        });
+      } else if(!errors.length){
+        Alert.alert(
+          'Fail...',
+          'Fuck! ID checked',
+          { cancelable: false }
+        )
+      }
+    });
+
+
+
+
   }
+
+
 
   render() {
     const { navigation } = this.props;
@@ -50,10 +110,18 @@ export default class SignUp extends Component {
     const hasErrors = key => errors.includes(key) ? styles.hasErrors : null;
 
     return (
-      <KeyboardAvoidingView style={styles.signup} behavior="padding">
+      <KeyboardAvoidingView style={styles.signup} behavior="padding" >
         <Block padding={[0, theme.sizes.base * 2]}>
-          <Text h1 bold>Sign Up</Text>
           <Block middle>
+            <Text h1 bold>Sign Up</Text>
+            <Input
+              id
+              label="Id"
+              error={hasErrors('id')}
+              style={[styles.input, hasErrors('id')]}
+              defaultValue={this.state.id}
+              onChangeText={text => this.setState({ id: text })}
+            />
             <Input
               email
               label="Email"

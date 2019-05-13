@@ -17,6 +17,7 @@ class Settings extends Component {
 
   componentDidMount() {
     this.setState({ profile: this.props.profile });
+    console.log(this.props.profile);
   }
 
   handleEdit(name, text) {
@@ -53,12 +54,12 @@ class Settings extends Component {
       <Block>
         <Block flex={false} row center space="between" style={styles.header}>
           <Text h1 bold>Settings</Text>
-          <Button>
+        {/*   <Button>
             <Image
               source={profile.avatar}
               style={styles.avatar}
             />
-          </Button>
+          </Button> */}
         </Block>
 
         <ScrollView showsVerticalScrollIndicator={false}>
@@ -74,11 +75,11 @@ class Settings extends Component {
             </Block>
             <Block row space="between" margin={[10, 0]} style={styles.inputRow}>
               <Block>
-                <Text gray2 style={{ marginBottom: 10 }}>Location</Text>
-                {this.renderEdit('location')}
+                <Text gray2 style={{ marginBottom: 10 }} >password</Text>
+                {this.renderEdit('password')}
               </Block>
-              <Text medium secondary onPress={() => this.toggleEdit('location')}>
-                {editing === 'location' ? 'Save' : 'Edit'}
+              <Text medium secondary onPress={() => this.toggleEdit('password')}>
+                {editing === 'password' ? 'Save' : 'Edit'}
               </Text>
             </Block>
             <Block row space="between" margin={[10, 0]} style={styles.inputRow}>
@@ -91,7 +92,7 @@ class Settings extends Component {
 
           <Divider margin={[theme.sizes.base, theme.sizes.base * 2]} />
 
-          <Block style={styles.sliders}>
+          {/* <Block style={styles.sliders}>
             <Block margin={[10, 0]}>
               <Text gray2 style={{ marginBottom: 10 }}>Budget</Text>
               <Slider
@@ -142,7 +143,7 @@ class Settings extends Component {
                 onValueChange={value => this.setState({ newsletter: value })}
               />
             </Block>
-          </Block>
+          </Block> */}
 
         </ScrollView>
       </Block>

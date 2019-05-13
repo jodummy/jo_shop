@@ -3,12 +3,13 @@ import { Dimensions, Image, StyleSheet, ScrollView, TouchableOpacity } from 'rea
 
 import { Card, Badge, Button, Block, Text } from '../components';
 import { theme, mocks } from '../constants';
+import { Icon } from 'native-base';
 
 const { width } = Dimensions.get('window');
 
 class Browse extends Component {
     state = {
-        active: 'Products',
+        active: 'All',
         categories: [],
     }
 
@@ -45,20 +46,22 @@ class Browse extends Component {
         )
     }
 
-    render() {
-        const { profile, navigation } = this.props;
-        const { categories } = this.state;
-        const tabs = ['Products', 'Inspirations', 'Shop'];
+    handleNavigation(category) {
+        const { navigation } = this.props;
+        console.log(category.id);
+        navigation.navigate(category.id);
+    }
 
+    render() {
+        const { navigation } = this.props;
+        const { categories } = this.state;
+        const tabs = ['All', 'service', 'notice'];
         return (
             <Block>
                 <Block flex={false} row center space="between" style={styles.header}>
                     <Text h1 bold>Browse</Text>
                     <Button onPress={() => navigation.navigate('Settings')}>
-                        <Image
-                            source={profile.avatar}
-                            style={styles.avatar}
-                        />
+                        <Icon name='md-settings' style={styles.avatar} />
                     </Button>
                 </Block>
 
@@ -74,14 +77,15 @@ class Browse extends Component {
                         {categories.map(category => (
                             <TouchableOpacity
                                 key={category.name}
-                                onPress={() => navigation.navigate('Explore', { category })}
+                                onPress={() => this.handleNavigation(category)}
+                            /*  onPress={() => navigation.navigate(source, { category })}  */
                             >
                                 <Card center middle shadow style={styles.category}>
                                     <Badge margin={[0, 0, 15]} size={50} color="rgba(41,216,143,0.20)">
                                         <Image source={category.image} />
                                     </Badge>
                                     <Text medium height={20}>{category.name}</Text>
-                                    <Text gray caption>{category.count} products</Text>
+                                    {/*  <Text gray caption>{category.count} All</Text> */}
                                 </Card>
                             </TouchableOpacity>
                         ))}
