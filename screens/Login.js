@@ -37,22 +37,22 @@ export default class Login extends Component {
             result = (snapshot.val() && snapshot.val().password) || 'null';
             console.log(result);
 
-            if (result === 'null') {
-                Alert.alert(
-                    '아이디가 없어!!1',
-                    '회원 가입을 먼저 해주세요.',
-                )
-            } else if (userPassword === result) {
+            if (userPassword === result) {
                 navigation.navigate('Browse');
             } else if (userPassword == "") {
                 Alert.alert(
-                    '비밀번호??',
-                    '안적었습니까, 휴먼?'
+                    '비밀번호를 적지 않았습니다',
+                    '확인해 주세요.'
+                )
+            } else if (result === 'null') {
+                Alert.alert(
+                    '아이디가 없습니다.',
+                    '회원 가입을 먼저 해주세요.',
                 )
             } else if (userPassword != result) {
                 Alert.alert(
-                    '비밀번호가 틀림',
-                    '비밀번호 확인해줘',
+                    '비밀번호가 틀립니다.',
+                    '비밀번호 확인해주세요.',
 
                 )
             }

@@ -10,8 +10,8 @@ import MainBorder from '../screens/MainBorder';
 import Browse from '../screens/Browse';
 import Product from '../screens/Product';
 import Settings from '../screens/Settings';
-import SubBoard from '../screens/SubBoard';
 import TodoTab from '../screens/TodoTab';
+import BoardTab from '../screens/BoardTab';
 
 import { theme } from '../constants';
 
@@ -20,12 +20,12 @@ const screens = createStackNavigator({
   Login,
   SignUp,
   Forgot,
-  SubBoard, 
   TodoTab,
   MainBorder,
   Browse,
   Product,
   Settings,
+  BoardTab
 }, {
     defaultNavigationOptions: {
       headerStyle: {

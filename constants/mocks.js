@@ -7,10 +7,10 @@ const categories = [
     image: require('../assets/icons/plants.png')
   },
   {
-    id: 'SubBoard',
+    id: 'BoardTab',
     name: '자유게시판',
     tags: ['All', 'notice'],
-   /*  count: 16, */
+    /*  count: 16, */
     image: require('../assets/icons/seeds.png')
   },
   {
@@ -45,7 +45,7 @@ const categories = [
 
 const products = [
   {
-    id: 1, 
+    id: 1,
     name: '16 Best Plants That Thrive In Your Bedroom',
     description: 'Bedrooms deserve to be decorated with lush greenery just like every other room in the house – but it can be tricky to find a plant that thrives here. Low light, high humidity and warm temperatures mean only certain houseplants will flourish.',
     tags: ['Interior', '27 m²', 'Ideas'],
@@ -75,15 +75,18 @@ const explore = [
 ];
 
 const profile = {
-  username: 'react-ui-kit',
+  username: '조준서',
   location: 'Europe',
-  email: 'contact@react-ui-kit.com',
+  password: '12345',
+  email: 'coogys@naver.com',
   avatar: require('../assets/images/avatar.png'),
   budget: 1000,
   monthly_cap: 5000,
   notifications: true,
   newsletter: false,
 };
+
+
 
 export {
   categories,

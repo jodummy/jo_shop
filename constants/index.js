@@ -5,5 +5,4 @@ import * as mocks from './mocks';
 export {
 theme,
 mocks,
-
 };

@@ -53,7 +53,7 @@ export default class SignUp extends Component {
     let userPassword = this.state.password;
     let userName = this.state.username;
     let result = '';
-    
+
     console.log('------------------------------------------------------------------------------');
     console.log('에러 갯수: ' + errors.length);
     console.log('id : ' + this.state.id);
@@ -74,8 +74,8 @@ export default class SignUp extends Component {
         ).then(() => {
           console.log('inserted !');
           Alert.alert(
-            'Success!',
-            'Your account has been created',
+            '축하드립니다!',
+            '가입에 성공하였습니다.',
             [
               {
                 text: 'Continue', onPress: () => {
@@ -88,10 +88,10 @@ export default class SignUp extends Component {
         }).catch((error) => {
           console.log(error);
         });
-      } else if(!errors.length){
+      } else if (!errors.length) {
         Alert.alert(
-          'Fail...',
-          'Fuck! ID checked',
+          '실패입니다.',
+          '중복된 아이디가 존재합니다.',
           { cancelable: false }
         )
       }
