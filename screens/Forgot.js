@@ -3,84 +3,91 @@ import { Alert, ActivityIndicator, Keyboard, KeyboardAvoidingView, StyleSheet } 
 
 import { Button, Block, Input, Text } from '../components';
 import { theme } from '../constants';
-
-const VALID_EMAIL = "contact@react-ui-kit.com";
-
+import validateForm from './helpers/validation';
+import { showMessage } from 'react-native-flash-message';
+import api from './api';
 export default class Forgot extends Component {
   state = {
-    email: VALID_EMAIL,
-    errors: [],
-    loading: false,
+    email: '',
+    isLoading: false,
+  };
+
+  runValidation = () => {
+    const { email } = this.state;
+
+    const fields = [
+      {
+        value: email,
+        verify: [
+          {
+            type: 'isPopulated',
+            message: 'Please enter your email address',
+          },
+          {
+            type: 'isEmail',
+            message: 'Please format your email address correctly',
+          },
+        ],
+      },
+    ];
+
+    const errorMessage = validateForm(fields);
+    if (errorMessage) {
+      showMessage({
+        message: 'Check your form',
+        description: errorMessage,
+        type: 'danger',
+      });
+
+      return false;
+    }
+
+    return true;
   }
 
-  handleForgot() {
-    const { navigation } = this.props;
+  sendPasswordResetEmail = () => {
     const { email } = this.state;
-    const errors = [];
 
-    Keyboard.dismiss();
-    this.setState({ loading: true });
-
-    // check with backend API or with some static data
-    if (email !== VALID_EMAIL) {
-      errors.push('email');
+    const isFormValid = this.runValidation();
+    if (!isFormValid) {
+      return;
     }
 
-    this.setState({ errors, loading: false });
+    this.setState({ isLoading: true });
 
-    if (!errors.length) {
-      Alert.alert(
-        'Password sent!',
-        'Please check you email.',
-        [
-          {
-            text: 'OK', onPress: () => {
-              navigation.navigate('Login')
-            }
-          }
-        ],
-        { cancelable: false }
-      )
-    } else {
-      Alert.alert(
-        'Error',
-        'Please check you Email address.',
-        [
-          { text: 'Try again', }
-        ],
-        { cancelable: false }
-      )
-    }
+    api.sendPasswordResetEmail(email)
+      .then(() => {
+        this.setState({ isLoading: false });
+        Alert.alert('email을 확인해주세요.');
+        this.props.navigation.navigate('Login')
+      })
+      .catch((error) => {
+        showMessage({
+          message: 'Check your form',
+          description: `${error.message} (${error.code})`,
+          type: 'danger',
+        });
+        this.setState({
+          isLoading: false,
+        });
+      });
   }
 
   render() {
-    const { navigation } = this.props;
-    const { loading, errors } = this.state;
-    const hasErrors = key => errors.includes(key) ? styles.hasErrors : null;
-
     return (
-      <KeyboardAvoidingView style={styles.forgot} behavior="padding">
+      <KeyboardAvoidingView style={styles.forgot} behavior="padding" isLoading={this.state.isLoading}>
         <Block padding={[0, theme.sizes.base * 2]}>
           <Text h1 bold>Forgot</Text>
           <Block middle>
             <Input
               label="Email"
-              error={hasErrors('email')}
-              style={[styles.input, hasErrors('email')]}
-              defaultValue={this.state.email}
+              keyboardType="email-address"
+              style={[styles.input]}
+              value={this.state.email}
               onChangeText={text => this.setState({ email: text })}
             />
-            <Button gradient onPress={() => this.handleForgot()}>
-              {loading ?
-                <ActivityIndicator size="small" color="white" /> :
-                <Text bold white center>Forgot</Text>
-              }
-            </Button>
-
-            <Button onPress={() => navigation.navigate('Login')}>
-              <Text gray caption center style={{ textDecorationLine: 'underline' }}>
-                Back to Login
-              </Text>
+            <Button gradient onPress={this.sendPasswordResetEmail}>
+                <Text bold white center>RESET PASSWORD</Text>
             </Button>
           </Block>
         </Block>

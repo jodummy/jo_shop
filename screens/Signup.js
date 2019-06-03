@@ -3,106 +3,98 @@ import { Alert, ActivityIndicator, Keyboard, KeyboardAvoidingView, StyleSheet } 
 
 import { Button, Block, Input, Text } from '../components';
 import { theme } from '../constants';
-import firebase, { database } from 'firebase';
-
+import firebase from '../lib/firebase';
 export default class SignUp extends Component {
   state = {
-    id: '',
     email: '',
-    username: '',
+    name: '',
     password: '',
+    passwordConfirmation: '',
     errors: [],
-    loading: false,
-
+    isLoading: false,
   }
 
 
   handleSignUp() {
-    const { navigation } = this.props;
-    const { id, email, username, password } = this.state;
+    const { passwordConfirmation, email, name, password } = this.state;
     const errors = [];
-
     Keyboard.dismiss();
-    this.setState({ loading: true });
-
-    var config = {
-      apiKey: "AIzaSyDE01SRVB6g99NCtlYfhgpW-3Ctc4PZdpg",
-      authDomain: "reactnativedatabase-e3164.firebaseapp.com",
-      databaseURL: "https://reactnativedatabase-e3164.firebaseio.com",
-      projectId: "reactnativedatabase-e3164",
-      storageBucket: "reactnativedatabase-e3164.appspot.com",
-      messagingSenderId: "5654389138",
-      appId: "1:5654389138:web:91ada309162d79ce"
-    };
-    if (!firebase.apps.length) {
-      firebase.initializeApp(config);
-    }
+    let check = false;
 
     // 없으면 체크해주는 기능
-    if (!id) errors.push('id');
     if (!email) errors.push('email');
-    if (!username) errors.push('username');
+    if (!name) errors.push('name');
     if (!password) errors.push('password');
-    this.setState({ errors, loading: false });
+    if (!passwordConfirmation) errors.push('passwordConfirmation');
+    this.setState({ errors, isLoading: false });
 
-    //빈 것이 0이어야지 들어간다.
-
-
-    let userId = this.state.id;
+    /* //빈 것이 0이어야지 들어간다.
+    let userPasswordConfirmation = this.state.passwordConfirmation;
     let userEmail = this.state.email;
     let userPassword = this.state.password;
     let userName = this.state.username;
-    let result = '';
+
 
     console.log('------------------------------------------------------------------------------');
     console.log('에러 갯수: ' + errors.length);
-    console.log('id : ' + this.state.id);
+    console.log('passwordConfirmation : ' + this.state.passwordConfirmation);
     console.log('email : ' + this.state.email);
     console.log('name : ' + this.state.username);
     console.log('pass : ' + this.state.password);
+ */
 
-    firebase.database().ref('/user/' + userId).once('value').then(function (snapshot) {
-      result = (snapshot.val() && snapshot.val().username) || '없어';
-      console.log('tests' + result);
-      if (!errors.length && result === '없어') {
-        firebase.database().ref('user/' + userId).set(
-          {
-            email: userEmail,
-            password: userPassword,
-            username: userName,
-          }
-        ).then(() => {
-          console.log('inserted !');
-          Alert.alert(
-            '축하드립니다!',
-            '가입에 성공하였습니다.',
-            [
-              {
-                text: 'Continue', onPress: () => {
-                  navigation.navigate('Browse')
-                }
-              }
-            ],
-            { cancelable: false }
-          )
-        }).catch((error) => {
-          console.log(error);
-        });
-      } else if (!errors.length) {
+
+
+    /*  if (errors.length != 0) {
+       return;
+     }
+ 
+     if (this.state.password.length < 6) {
+       Alert.alert(
+         '비밀번호 6자 이상이여야 합니다',
+         '확인해주세요.');
+       return;
+ 
+     }
+ 
+     if (this.state.password != this.state.passwordConfirmation) {
+       Alert.alert(
+         '비밀번호가 일치하지 않습니다',
+         '확인해주세요.');
+       return;
+     } */
+
+
+
+
+    this.setState({ isLoading: true });
+
+    firebase
+      .auth()
+      .createUserWithEmailAndPassword(email, password)
+      .then(({ user }) => {
+        // Add the new user to the users table
+        firebase.database().ref()
+          .child('users')
+          .push({
+            email: this.state.email,
+            uid: user.uid,
+            name: this.state.name,
+          });
+        this.setState({ isLoading: false });
+        console.log("머야엄야ㅓㅁ");
+        return this.props.navigation.navigate('Login');
+      }).catch((error) => {
+        console.log("error :" + error.code);
+        console.log("error :" + error);
         Alert.alert(
-          '실패입니다.',
-          '중복된 아이디가 존재합니다.',
-          { cancelable: false }
-        )
-      }
-    });
-
-
-
-
+          error.message
+      )
+        this.setState({
+          isLoading: false,
+        });
+      });
   }
-
-
 
   render() {
     const { navigation } = this.props;
@@ -115,12 +107,11 @@ export default class SignUp extends Component {
           <Block middle>
             <Text h1 bold>Sign Up</Text>
             <Input
-              id
-              label="Id"
-              error={hasErrors('id')}
-              style={[styles.input, hasErrors('id')]}
-              defaultValue={this.state.id}
-              onChangeText={text => this.setState({ id: text })}
+              label="name"
+              error={hasErrors('name')}
+              style={[styles.input, hasErrors('name')]}
+              defaultValue={this.state.name}
+              onChangeText={text => this.setState({ name: text })}
             />
             <Input
               email
@@ -131,19 +122,20 @@ export default class SignUp extends Component {
               onChangeText={text => this.setState({ email: text })}
             />
             <Input
-              label="Username"
-              error={hasErrors('username')}
-              style={[styles.input, hasErrors('username')]}
-              defaultValue={this.state.username}
-              onChangeText={text => this.setState({ username: text })}
-            />
-            <Input
               secure
               label="Password"
               error={hasErrors('password')}
               style={[styles.input, hasErrors('password')]}
               defaultValue={this.state.password}
               onChangeText={text => this.setState({ password: text })}
+            />
+            <Input
+              secure
+              label="passwordConfirmation"
+              error={hasErrors('passwordConfirmation')}
+              style={[styles.input, hasErrors('passwordConfirmation')]}
+              defaultValue={this.state.passwordConfirmation}
+              onChangeText={text => this.setState({ passwordConfirmation: text })}
             />
             <Button gradient onPress={() => this.handleSignUp()}>
               {loading ?

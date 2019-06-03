@@ -3,61 +3,73 @@ import { Alert, ActivityIndicator, Keyboard, KeyboardAvoidingView, StyleSheet } 
 
 import { Button, Block, Input, Text } from '../components';
 import { theme } from '../constants';
-import firebase, { database } from 'firebase';
+import firebase from '../lib/firebase';
+//추가  import
+import { signInApp } from './auth';
 
 export default class Login extends Component {
     state = {
-        id: '',
         email: '',
-        username: '',
         password: '',
+        isLoading: false,
     }
+
+    // componentDidMount추가
+  /*   componentDidMount() {
+        const messageProps = get(this.props, 'navigation.state.params.messageProps');
+        if (messageProps) {
+            const { title, body, type } = messageProps;
+
+            showMessage({
+                message: title,
+                description: body,
+                type,
+            });
+        }
+    } */
 
     handleLogin() {
         const { navigation } = this.props;
-        const { id, password } = this.state;
+        const { email, password } = this.state;
 
         Keyboard.dismiss();
-        var config = {
-            apiKey: "AIzaSyDE01SRVB6g99NCtlYfhgpW-3Ctc4PZdpg",
-            authDomain: "reactnativedatabase-e3164.firebaseapp.com",
-            databaseURL: "https://reactnativedatabase-e3164.firebaseio.com",
-            projectId: "reactnativedatabase-e3164",
-            storageBucket: "reactnativedatabase-e3164.appspot.com",
-            messagingSenderId: "5654389138",
-            appId: "1:5654389138:web:91ada309162d79ce"
-        };
-        if (!firebase.apps.length) {
-            firebase.initializeApp(config);
-        }
-        let result = '';
+    
         let userPassword = password;
-        console.log('내가 적은 비밀번호 : ' + userPassword);
-        firebase.database().ref('/user/' + id).once('value').then(function (snapshot) {
-            result = (snapshot.val() && snapshot.val().password) || 'null';
-            console.log(result);
+        let userEmail = email;
+        let loading = false;
+        if (1 === 0) {
+            navigation.navigate('Browse');
+        } else if (userEmail == '') {
+            Alert.alert(
+                '이메일을 적지 않았습니다',
+                '확인해 주세요.'
+            )
+        } else if (userPassword == "") {
+            Alert.alert(
+                '비밀번호를 적지 않았습니다',
+                '확인해 주세요.'
+            )
+        } else {
+            loading = true;
+        }
 
-            if (userPassword === result) {
-                navigation.navigate('Browse');
-            } else if (userPassword == "") {
+        if (!loading) {
+            return;
+        }
+        firebase.auth().signInWithEmailAndPassword(email, password).then(() => {
+                this.setState({ isLoading: false });
+                signInApp().then(() => this.props.navigation.navigate('Browse'));
+            })
+            .catch(() => {
                 Alert.alert(
-                    '비밀번호를 적지 않았습니다',
-                    '확인해 주세요.'
+                    '아이디와 비밀번호가 옳지 않습니다'
                 )
-            } else if (result === 'null') {
-                Alert.alert(
-                    '아이디가 없습니다.',
-                    '회원 가입을 먼저 해주세요.',
-                )
-            } else if (userPassword != result) {
-                Alert.alert(
-                    '비밀번호가 틀립니다.',
-                    '비밀번호 확인해주세요.',
-
-                )
-            }
-        });
+                this.setState({
+                    isLoading: false,
+                });
+            });
     }
+
 
     render() {
         const { navigation } = this.props;
@@ -69,10 +81,10 @@ export default class Login extends Component {
                     <Text h1 bold>Login</Text>
                     <Block middle>
                         <Input
-                            label="ID"
+                            label="email"
                             style={[styles.input]}
-                            defaultValue={this.state.id}
-                            onChangeText={text => this.setState({ id: text })}
+                            defaultValue={this.state.email}
+                            onChangeText={text => this.setState({ email: text })}
                         />
                         <Input
                             secure
