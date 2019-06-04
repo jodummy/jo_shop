@@ -12,6 +12,7 @@ import Product from '../screens/Product';
 import Settings from '../screens/Settings';
 import TodoTab from '../screens/TodoTab';
 import BoardTab from '../screens/BoardTab';
+import chatScreen from '../screens/chatScreen';
 
 import { theme } from '../constants';
 
@@ -25,7 +26,8 @@ const screens = createStackNavigator({
   Browse,
   Product,
   Settings,
-  BoardTab
+  BoardTab,
+  chatScreen,
 }, {
     defaultNavigationOptions: {
       headerStyle: {

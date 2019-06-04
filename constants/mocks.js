@@ -28,9 +28,9 @@ const categories = [
     image: require('../assets/icons/sprayers.png')
   },
   {
-    id: '미정1',
-    name: '미정1',
-    tags: ['All', 'no'],
+    id: 'chatScreen',
+    name: 'chat',
+    tags: ['All', 'service'],
     /* count: 47, */
     image: require('../assets/icons/pots.png')
   },
