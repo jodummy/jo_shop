@@ -9,7 +9,7 @@ import Chat from "./chat/chatScreen/Chat";
 const instanceLocatorId = "a206a4ab-c990-4d3e-b230-71c7fda5c174";
 const presenceRoomId = "21252441"; // room ID (string) of the general room created through the Chatkit inspector
 //여기 조심해줘요
-const chatServer = "http://10.0.5.132:3000/user";
+const chatServer = "http://192.168.43.44:3000/user";
 
 const tokenProvider = new TokenProvider({
   url: "https://us1.pusherplatform.io/services/chatkit_token_provider/v1/a206a4ab-c990-4d3e-b230-71c7fda5c174/token"

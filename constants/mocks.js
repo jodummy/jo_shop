@@ -14,8 +14,8 @@ const categories = [
     image: require('../assets/icons/seeds.png')
   },
   {
-    id: 'TimeTable',
-    name: '시간표',
+    id: 'Inform',
+    name: '정보게시판',
     tags: ['All', 'service'],
     /* count: 68, */
     image: require('../assets/icons/flowers.png')
