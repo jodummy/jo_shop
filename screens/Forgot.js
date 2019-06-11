@@ -4,7 +4,6 @@ import { Alert, ActivityIndicator, Keyboard, KeyboardAvoidingView, StyleSheet } 
 import { Button, Block, Input, Text } from '../components';
 import { theme } from '../constants';
 import validateForm from './helpers/validation';
-import { showMessage } from 'react-native-flash-message';
 import api from './api';
 export default class Forgot extends Component {
   state = {

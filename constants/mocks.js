@@ -7,7 +7,7 @@ const categories = [
     image: require('../assets/icons/plants.png')
   },
   {
-    id: 'BoardTab',
+    id: 'StackNavigator',
     name: '자유게시판',
     tags: ['All', 'notice'],
     /*  count: 16, */
@@ -35,9 +35,9 @@ const categories = [
     image: require('../assets/icons/pots.png')
   },
   {
-    id: '미정2',
-    name: '미정2',
-    tags: ['All', 'no'],
+    id: 'FeedScreen',
+    name: 'sell',
+    tags: ['All', 'service'],
     /* count: 47, */
     image: require('../assets/icons/fertilizers.png')
   },
