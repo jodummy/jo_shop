@@ -10,7 +10,7 @@
     "@expo/vector-icons": "^10.0.1",
     "@pusher/chatkit-client": "1.4.1",
     "eslint": "^5.16.0",
-    "expo": "^33.0.5",
+    "expo": "^46.0.14",
     "firebase": "^5.2.0",
     "lodash": "^4.17.11",
     "native-base": "^2.12.1",
